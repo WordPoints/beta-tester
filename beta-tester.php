@@ -179,33 +179,22 @@ class WordPoints_GitHub_Updater {
 	 * Get the data for the latest commit to the GitHub repo.
 	 *
 	 * @since 1.0.0
+	 *
+	 * @return object|bool The data for the last commit, or false on failure.
 	 */
 	public function get_latest_commit() {
 
 		$last_commit = get_site_transient( 'wordpoints_beta_tester_last_commit' );
-		$current_commit = get_site_option( 'wordpoints_beta_version' );
 
 		if ( $this->overrule_transients() || empty( $last_commit ) ) {
 
-			$api_url = 'https://api.github.com/repos/WordPoints/wordpoints/commits?path=src';
+			$latest_commits = $this->get_latest_commits();
 
-			if ( $current_commit ) {
-				$api_url .= '&since=' . $current_commit->commit->committer->date;
-			}
-
-			$raw_response = $this->remote_get( $api_url );
-
-			if ( is_wp_error( $raw_response ) ){
+			if ( ! $response ) {
 				return false;
 			}
 
-			$response = json_decode( $raw_response['body'] );
-
-			if ( ! is_array( $response ) ) {
-				return false;
-			}
-
-			$last_commit = array_shift( $response );
+			$last_commit = array_shift( $latest_commits );
 
 			// Refresh every six hours.
 			if ( $last_commit ) {
@@ -214,6 +203,38 @@ class WordPoints_GitHub_Updater {
 		}
 
 		return $last_commit;
+	}
+
+	/**
+	 * Get the data for the most recent commits to the GitHub repo.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return array|bool The API response, or false on failure.
+	 */
+	public function get_latest_commits() {
+
+		$api_url = 'https://api.github.com/repos/WordPoints/wordpoints/commits?path=src';
+
+		$current_commit = get_site_option( 'wordpoints_beta_version' );
+
+		if ( $current_commit ) {
+			$api_url .= '&since=' . $current_commit->commit->committer->date;
+		}
+
+		$raw_response = $this->remote_get( $api_url );
+
+		if ( is_wp_error( $raw_response ) ){
+			return false;
+		}
+
+		$response = json_decode( $raw_response['body'] );
+
+		if ( ! is_array( $response ) ) {
+			return false;
+		}
+
+		return $response;
 	}
 
 	/**
@@ -284,10 +305,38 @@ class WordPoints_GitHub_Updater {
 		$latest_commit = $this->get_latest_commit();
 
 		if ( $latest_commit ) {
-			$response->last_updated = $latest_commit->commit->date;
+			$response->last_updated = $latest_commit->commit->author->date;
 		}
 
 		$response->download_link = $this->config['zip_url'];
+
+		// Display plugin information in the update modal.
+		if ( 'plugin_information' == $action && defined( 'IFRAME_REQUEST' ) && IFRAME_REQUEST ) {
+
+			$latest_commits = $this->get_latest_commits();
+
+			$log = '';
+
+			if ( is_array( $latest_commits ) && ! empty( $latest_commits ) ) {
+
+				$log .= '<ul>';
+
+				foreach ( $latest_commits as $commit ) {
+
+					$log .= '<li><a href="' . $commit->html_url . '" target="_blank">' . substr( $commit->sha, 0, 8 ) . '</a>: ' . $commit->commit->message . '</li>';
+				}
+
+				$log .= '</ul>';
+
+			} else {
+
+				$log .= sprintf( __( 'Unable to get a log of the latest commits. Try <a href="%s" target="_blank">viewing the log on GitHub</a> instead.', 'wordpoints-beta-tester' ), $this->config['github_url'] . '/commits/master/' );
+			}
+
+			$response->sections = array(
+				__( 'Commit Log', 'wordpoints-beta-tester' ) => $log,
+			);
+		}
 
 		return $response;
 	}
