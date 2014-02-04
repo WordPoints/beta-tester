@@ -190,7 +190,7 @@ class WordPoints_GitHub_Updater {
 
 			$latest_commits = $this->get_latest_commits();
 
-			if ( ! $response ) {
+			if ( ! $latest_commits ) {
 				return false;
 			}
 
