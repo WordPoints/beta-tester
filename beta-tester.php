@@ -260,6 +260,8 @@ class WordPoints_GitHub_Updater {
 			return $transient;
 		}
 
+		unset( $transient->response[ $this->config['slug'] ] );
+
 		$current_commit = get_site_option( 'wordpoints_beta_version' );
 		$latest_commit  = $this->get_latest_commit();
 
