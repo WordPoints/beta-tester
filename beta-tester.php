@@ -330,7 +330,7 @@ class WordPoints_GitHub_Updater {
 
 			} else {
 
-				$log .= sprintf( __( 'Unable to get a log of the latest commits. Try <a href="%s" target="_blank">viewing the log on GitHub</a> instead.', 'wordpoints-beta-tester' ), $this->config['github_url'] . '/commits/master/' );
+				$log .= sprintf( __( 'Unable to get a log of the latest commits. Try <a href="%s" target="_blank">viewing the log on GitHub</a> instead.', 'wordpoints-beta-tester' ), $this->config['github_url'] . 'commits/master/' );
 			}
 
 			$response->sections = array(
