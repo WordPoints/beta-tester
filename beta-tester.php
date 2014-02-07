@@ -214,15 +214,56 @@ class WordPoints_GitHub_Updater {
 	 */
 	public function get_latest_commits() {
 
-		$api_url = 'https://api.github.com/repos/WordPoints/wordpoints/commits?path=src';
+		$api_query = 'commits?path=src';
 
 		$current_commit = get_site_option( 'wordpoints_beta_version' );
 
 		if ( $current_commit ) {
-			$api_url .= '&since=' . $current_commit->commit->committer->date;
+			$api_query .= '&since=' . $current_commit->commit->committer->date;
 		}
 
-		$raw_response = $this->remote_get( $api_url );
+		return $this->github_api( $api_query );
+	}
+
+	/**
+	 * Check the build status of the plugin.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return string|bool The build status of the plugin, or false on failure.
+	 */
+	public function get_build_status() {
+
+		$build_status = get_site_transient( 'wordpoints_beta_tester_build_status' );
+
+		if ( $this->overrule_transients() || empty( $build_status ) ) {
+
+			$commit = $this->github_api( 'statuses/master' );
+
+			if ( ! $commit || ! isset( $commit[0]->state ) ) {
+				return false;
+			}
+
+			$build_status = $commit[0]->state;
+
+			set_site_transient( 'wordpoints_beta_tester_build_status', $build_status, HOUR_IN_SECONDS );
+		}
+
+		return $build_status;
+	}
+
+	/**
+	 * Get the result of a request to the GitHub API.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string $query The API query.
+	 *
+	 * @return object|bool The API data, or false on failure.
+	 */
+	public function github_api( $query ) {
+
+		$raw_response = $this->remote_get( "https://api.github.com/repos/WordPoints/wordpoints/{$query}" );
 
 		if ( is_wp_error( $raw_response ) ){
 			return false;
@@ -266,6 +307,11 @@ class WordPoints_GitHub_Updater {
 		$latest_commit  = $this->get_latest_commit();
 
 		if ( $latest_commit && ( ! $current_commit || $current_commit->sha != $latest_commit->sha ) ) {
+
+			// Check the build status.
+			if ( 'success' != $this->get_build_status() ) {
+				return $transient;
+			}
 
 			$this->upgrade_commit = $latest_commit;
 
