@@ -169,7 +169,8 @@ class WordPoints_GitHub_Updater {
 	public function remote_get( $query ) {
 
 		$raw_response = wp_remote_get( $query, array(
-			'sslverify' => true
+			'sslverify' => true,
+			'headers'   => array( 'accept' => 'application/vnd.github.v3+json' ),
 		) );
 
 		return $raw_response;
