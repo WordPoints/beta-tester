@@ -298,7 +298,7 @@ class WordPoints_GitHub_Updater {
 
 		$raw_response = $this->remote_get( "https://api.github.com/repos/WordPoints/wordpoints/{$query}" );
 
-		if ( is_wp_error( $raw_response ) ){
+		if ( is_wp_error( $raw_response ) ) {
 			return false;
 		}
 
