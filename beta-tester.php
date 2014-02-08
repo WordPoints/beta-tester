@@ -253,6 +253,38 @@ class WordPoints_GitHub_Updater {
 	}
 
 	/**
+	 * Get the version of the plugin from the GitHub repo.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return string|bool The version from GitHub, or false on failure.
+	 */
+	public function get_version() {
+
+		$version = get_site_transient( 'wordpoints_beta_tester_github_version' );
+
+		if ( $this->overrule_transients() || empty( $version ) ) {
+
+			$plugin = $this->github_api( 'contents/src/wordpoints.php' );
+
+			if ( ! $plugin || ! isset( $plugin->content ) ) {
+				return false;
+			}
+
+			preg_match( '/Version:\s+([a-zA-Z0-9\.]+)\n/', base64_decode( $plugin->content ), $matches );
+
+			if ( ! empty( $matches[1] ) ) {
+
+				$version = $matches[1];
+
+				set_site_transient( 'wordpoints_beta_tester_github_version', $version, HOUR_IN_SECONDS );
+			}
+		}
+
+		return $version;
+	}
+
+	/**
 	 * Get the result of a request to the GitHub API.
 	 *
 	 * @since 1.0.0
@@ -271,7 +303,7 @@ class WordPoints_GitHub_Updater {
 
 		$response = json_decode( $raw_response['body'] );
 
-		if ( ! is_array( $response ) ) {
+		if ( ! is_array( $response ) && ! is_object( $response ) ) {
 			return false;
 		}
 
@@ -315,8 +347,14 @@ class WordPoints_GitHub_Updater {
 
 			$this->upgrade_commit = $latest_commit;
 
+			$version = $this->get_version();
+
+			if ( ! $version ) {
+				$version = WORDPOINTS_VERSION;
+			}
+
 			$response = new stdClass;
-			$response->new_version = WORDPOINTS_VERSION . '-' . $latest_commit->sha;
+			$response->new_version = $version . '-#' . substr( $latest_commit->sha, 0, 8 );
 			$response->slug        = $this->config['slug'];
 			$response->url         = $this->config['github_url'];
 			$response->package     = $this->config['zip_url'];
