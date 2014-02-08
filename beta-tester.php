@@ -191,7 +191,7 @@ class WordPoints_GitHub_Updater {
 
 			$latest_commits = $this->get_latest_commits();
 
-			if ( ! $latest_commits ) {
+			if ( ! is_array( $latest_commits ) ) {
 				return false;
 			}
 
@@ -223,7 +223,13 @@ class WordPoints_GitHub_Updater {
 			$api_query .= '&since=' . $current_commit->commit->committer->date;
 		}
 
-		return $this->github_api( $api_query );
+		$commits = $this->github_api( $api_query );
+
+		if ( ! is_array( $commits ) ) {
+			return false;
+		}
+
+		return $commits;
 	}
 
 	/**
