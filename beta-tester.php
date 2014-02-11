@@ -247,7 +247,7 @@ class WordPoints_GitHub_Updater {
 
 			$commit = $this->github_api( 'statuses/master' );
 
-			if ( ! $commit || ! isset( $commit[0]->state ) ) {
+			if ( ! is_array( $commit ) || ! isset( $commit[0]->state ) ) {
 				return false;
 			}
 
