@@ -449,7 +449,7 @@ class WordPoints_GitHub_Updater {
 	 */
 	public function upgrader_source_selection( $source, $remote_source, $upgrader ) {
 
-		if ( isset( $upgrader->skin->plugin ) && $upgrader->skin->plugin === $this->config['slug'] ) {
+		if ( basename( $source ) === 'wordpoints-master' ) {
 			$source .= 'src/';
 		}
 
