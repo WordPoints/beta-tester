@@ -416,18 +416,18 @@ class WordPoints_GitHub_Updater {
 
 				foreach ( $latest_commits as $commit ) {
 
-					$log .= '<li><a href="' . $commit->html_url . '" target="_blank">' . substr( $commit->sha, 0, 8 ) . '</a>: ' . $commit->commit->message . '</li>';
+					$log .= '<li><a href="' . esc_attr( esc_url( $commit->html_url ) ) . '" target="_blank">' . esc_html( substr( $commit->sha, 0, 8 ) ) . '</a>: ' . esc_html( $commit->commit->message ) . '</li>';
 				}
 
 				$log .= '</ul>';
 
 			} else {
 
-				$log .= sprintf( __( 'Unable to get a log of the latest commits. Try <a href="%s" target="_blank">viewing the log on GitHub</a> instead.', 'wordpoints-beta-tester' ), $this->config['github_url'] . 'commits/master/' );
+				$log .= sprintf( __( 'Unable to get a log of the latest commits. Try <a href="%s" target="_blank">viewing the log on GitHub</a> instead.', 'wordpoints-beta-tester' ), esc_attr( esc_url( $this->config['github_url'] . 'commits/master/' ) ) );
 			}
 
 			$response->sections = array(
-				__( 'Commit Log', 'wordpoints-beta-tester' ) => $log,
+				esc_html__( 'Commit Log', 'wordpoints-beta-tester' ) => $log,
 			);
 		}
 
@@ -492,9 +492,9 @@ class WordPoints_GitHub_Updater {
 
 		// Output the update message.
 		if ( is_wp_error( $activate ) ) {
-			_e( 'The plugin has been updated, but could not be reactivated. Please reactivate it manually.', 'wordpoints-beta-tester' );
+			esc_html_e( 'The plugin has been updated, but could not be reactivated. Please reactivate it manually.', 'wordpoints-beta-tester' );
 		} else {
-			_e( 'Plugin reactivated successfully.', 'wordpoints-beta-tester' );
+			esc_html_e( 'Plugin reactivated successfully.', 'wordpoints-beta-tester' );
 		}
 
 		return $result;
