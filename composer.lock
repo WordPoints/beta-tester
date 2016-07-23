@@ -1,0 +1,88 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "This file is @generated automatically"
+    ],
+    "hash": "d545d9b7081dfaa0156f84951bcfcb70",
+    "content-hash": "5337c52d2e3e85094eee5b3a659576dd",
+    "packages": [],
+    "packages-dev": [
+        {
+            "name": "jdgrimes/wp-plugin-uninstall-tester",
+            "version": "0.6.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/JDGrimes/wp-plugin-uninstall-tester.git",
+                "reference": "99e9c16ded11150f21a7a78a472997c2a0c59fb2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/JDGrimes/wp-plugin-uninstall-tester/zipball/99e9c16ded11150f21a7a78a472997c2a0c59fb2",
+                "reference": "99e9c16ded11150f21a7a78a472997c2a0c59fb2",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.2.0"
+            },
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "J.D. Grimes",
+                    "email": "jdg@codesymphony.co",
+                    "homepage": "http://codesymphony.co",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Utilities for testing WordPress plugin install/uninstall with PHPUnit",
+            "homepage": "https://github.com/JDGrimes/wp-plugin-uninstall-tester",
+            "time": "2016-06-30 19:28:49"
+        },
+        {
+            "name": "wordpoints/module-uninstall-tester",
+            "version": "0.3.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/WordPoints/module-uninstall-tester.git",
+                "reference": "b04e5148644276dc7dd9c11f9322b56f9cc683dd"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/WordPoints/module-uninstall-tester/zipball/b04e5148644276dc7dd9c11f9322b56f9cc683dd",
+                "reference": "b04e5148644276dc7dd9c11f9322b56f9cc683dd",
+                "shasum": ""
+            },
+            "require": {
+                "jdgrimes/wp-plugin-uninstall-tester": "^0.6",
+                "php": ">=5.2.0"
+            },
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "J.D. Grimes",
+                    "email": "jdg@codesymphony.co",
+                    "homepage": "http://codesymphony.co",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Utilities for testing WordPoints module install/uninstall with PHPUnit",
+            "homepage": "https://github.com/WordPoints/wordpoints-module-uninstall-tester",
+            "time": "2016-07-23 22:16:30"
+        }
+    ],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": [],
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": []
+}
