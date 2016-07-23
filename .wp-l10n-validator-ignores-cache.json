@@ -1,0 +1,34 @@
+{
+    "\/beta-tester.php": {
+        "application\/vnd.github.v3+json": {
+            "175": {
+                "name": "array",
+                "type": "unknown",
+                "args_started": true,
+                "arg_count": 0,
+                "parentheses": 1
+            }
+        },
+        "commits?path=src": {
+            "220": false
+        },
+        "&since=": {
+            "225": false
+        },
+        "statuses\/master": {
+            "250": {
+                "name": "WordPoints_GitHub_Updater::github_api",
+                "type": "unknown",
+                "args_started": true,
+                "arg_count": 0,
+                "parentheses": 1
+            }
+        },
+        "-#": {
+            "366": false
+        },
+        ":": {
+            "421": false
+        }
+    }
+}
