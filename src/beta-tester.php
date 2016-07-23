@@ -106,7 +106,7 @@ class WordPoints_GitHub_Updater {
 	}
 
 	/**
-	 * Check wether or not the transients need to be overruled.
+	 * Check whether or not the transients need to be overruled.
 	 *
 	 * When the transients are ignored, the API will be called for every single
 	 * page load.
@@ -128,7 +128,7 @@ class WordPoints_GitHub_Updater {
 	}
 
 	/**
-	 * Set the timout length for an HTTP request.
+	 * Set the timeout length for an HTTP request.
 	 *
 	 * @since 1.0.0
 	 *
