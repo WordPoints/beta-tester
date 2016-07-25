@@ -96,11 +96,11 @@ class WordPoints_GitHub_Updater {
 		// Hook into the plugin details screen
 		add_filter( 'plugins_api', array( $this, 'get_plugin_info' ), 10, 3 );
 
-		// Change the directory to just the /src/ folder.
-		add_filter( 'upgrader_source_selection', array( $this, 'upgrader_source_selection' ), 10, 3 );
+		// Change the source directory to just the /src/ folder.
+		add_filter( 'upgrader_source_selection', array( $this, 'upgrader_source_selection' ), 10, 4 );
 
-		// Move the package to the correct location after install.
-		add_filter( 'upgrader_post_install', array( $this, 'upgrader_post_install' ), 10, 3 );
+		// Change the destination directory to the correct one.
+		add_filter( 'upgrader_package_options', array( $this, 'upgrader_package_options' ) );
 
 		// Set the timeout for the HTTP request.
 		add_filter( 'http_request_timeout', array( $this, 'http_request_timeout' ) );
@@ -447,21 +447,46 @@ class WordPoints_GitHub_Updater {
 	}
 
 	/**
+	 * Set the destination to be the correct directory.
+	 *
+	 * @since 1.0.4
+	 *
+	 * @WordPress\filter upgrader_package_options Added by the constructor.
+	 *
+	 * @param array $options The options for this upgrade.
+	 *
+	 * @return array The filtered options.
+	 */
+	public function upgrader_package_options( $options ) {
+
+		if ( $options['hook_extra']['plugin'] === $this->config['basename'] ) {
+			$options['destination'] = trailingslashit( $options['destination'] )
+				. trailingslashit( dirname( $this->config['basename'] ) );
+		}
+
+		return $options;
+	}
+
+	/**
 	 * Get the /src dir instead of the whole thing.
 	 *
 	 * @since 1.0.0
 	 *
-	 * @filter upgrader_source_selection Added by the class constructor.
+	 * @WordPress\filter upgrader_source_selection Added by the class constructor.
 	 *
 	 * @param string $source        The path to the plugin source.
 	 * @param string $remote_source The "remote" path to the plugin source.
 	 * @param object $upgrader      The WP_Uprader instance.
+	 * @param array  $args          Other arguments.
 	 *
 	 * @return string The path to the /src dir instead.
 	 */
-	public function upgrader_source_selection( $source, $remote_source, $upgrader ) {
+	public function upgrader_source_selection( $source, $remote_source, $upgrader, $args ) {
 
-		if ( basename( $source ) === 'wordpoints-master' ) {
+		if (
+			$args['plugin'] === $this->config['basename']
+			&& basename( $source ) === 'wordpoints-master'
+		) {
 			$source .= 'src/';
 		}
 
@@ -474,8 +499,7 @@ class WordPoints_GitHub_Updater {
 	 * The default location would be /wp-content/plugins/src/.
 	 *
 	 * @since 1.0.0
-	 *
-	 * @filter upgrader_post_install Added by the constructor.
+	 * @deprecated 1.0.4 See self::upgrader_package_options().
 	 *
 	 * @param boolean $true       Always true.
 	 * @param mixed   $hook_extra Extra info about the upgrade. Not used.
@@ -484,6 +508,8 @@ class WordPoints_GitHub_Updater {
 	 * @return array $result the result of the move
 	 */
 	public function upgrader_post_install( $true, $hook_extra, $result ) {
+
+		_deprecated_function( __FUNCTION__, '1.0.4', 'self::upgrader_package_options()' );
 
 		if ( ! isset( $hook_extra['plugin'] ) || $hook_extra['plugin'] !== $this->config['basename'] ) {
 			return $true;
