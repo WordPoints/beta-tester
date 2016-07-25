@@ -46,18 +46,22 @@ class WordPoints_GitHub_Updater {
 	/**
 	 * The basic config for the updates.
 	 *
-	 * The slug is dynamic, so it is set by the constructor.
+	 * The basename is dynamic, so it is set by the constructor.
 	 *
 	 * @since 1.0.0
 	 *
 	 * @type array $config {
-	 *       @type string $slug       The plugin's slug (plugin basename path).
+	 *       @type int    $id         The plugin's ID on WordPress.org.
+	 *       @type string $slug       The plugin's slug on WordPress.org.
+	 *       @type string $basename   The plugin's path relative to the plugins dir.
 	 *       @type string $github_url The URL of the repo on GitHub.
 	 *       @type string $zip_url    The URL of the zip archive of the GitHub repo.
 	 * }
 	 */
 	public $config = array(
-		'slug'       => '',
+		'id'         => 43839,
+		'slug'       => 'wordpoints',
+		'basename'   => 'wordpoints/wordpoints.php',
 		'github_url' => 'https://github.com/WordPoints/wordpoints/',
 		'zip_url'    => 'https://github.com/WordPoints/wordpoints/archive/master.zip',
 	);
@@ -84,7 +88,7 @@ class WordPoints_GitHub_Updater {
 	 */
 	public function __construct() {
 
-		$this->config['slug'] = plugin_basename( WORDPOINTS_DIR . '/wordpoints.php' );
+		$this->config['basename'] = plugin_basename( WORDPOINTS_DIR . '/wordpoints.php' );
 
 		// Check for new commits when WordPress checks for plugin updates.
 		add_filter( 'site_transient_update_plugins', array( $this, 'api_check' ) );
@@ -342,7 +346,7 @@ class WordPoints_GitHub_Updater {
 			return $transient;
 		}
 
-		unset( $transient->response[ $this->config['slug'] ] );
+		unset( $transient->response[ $this->config['basename'] ] );
 
 		$current_commit = get_site_option( 'wordpoints_beta_version' );
 		$latest_commit  = $this->get_latest_commit();
@@ -364,11 +368,16 @@ class WordPoints_GitHub_Updater {
 
 			$response = new stdClass;
 			$response->new_version = $version . '-#' . substr( $latest_commit->sha, 0, 8 );
+			$response->id          = $this->config['id'];
 			$response->slug        = $this->config['slug'];
+			$response->plugin      = $this->config['basename'];
 			$response->url         = $this->config['github_url'];
 			$response->package     = $this->config['zip_url'];
+			$response->upgrade_notice = '';
+			$response->tested         = $GLOBALS['wp_version'];
+			$response->compatibility  = (object) array( 'scalar' => (object) array( 'scalar' => false ) );
 
-			$transient->response[ $this->config['slug'] ] = $response;
+			$transient->response[ $this->config['basename'] ] = $response;
 		}
 
 		return $transient;
@@ -475,7 +484,7 @@ class WordPoints_GitHub_Updater {
 	 */
 	public function upgrader_post_install( $true, $hook_extra, $result ) {
 
-		if ( ! isset( $hook_extra['plugin'] ) || $hook_extra['plugin'] !== $this->config['slug'] ) {
+		if ( ! isset( $hook_extra['plugin'] ) || $hook_extra['plugin'] !== $this->config['basename'] ) {
 			return $true;
 		}
 
@@ -487,7 +496,7 @@ class WordPoints_GitHub_Updater {
 		$result['destination'] = WORDPOINTS_DIR;
 
 		// Activate it.
-		$activate = activate_plugin( WP_PLUGIN_DIR . '/' . $this->config['slug'] );
+		$activate = activate_plugin( WP_PLUGIN_DIR . '/' . $this->config['basename'] );
 
 		// Update the current commit in the database.
 		update_site_option( 'wordpoints_beta_version', $this->upgrade_commit );
