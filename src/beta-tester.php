@@ -412,6 +412,7 @@ class WordPoints_GitHub_Updater {
 			$response->last_updated = $latest_commit->commit->author->date;
 		}
 
+		$response->name = 'WordPoints'; // Make sure that this is always set.
 		$response->download_link = $this->config['zip_url'];
 
 		// Display plugin information in the update modal.
