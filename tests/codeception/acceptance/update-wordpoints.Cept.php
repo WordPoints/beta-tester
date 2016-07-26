@@ -17,7 +17,7 @@ $I->see( 'Commit Log' );
 $I->see( 'Last Updated:' );
 $I->click( 'Install Update Now' );
 $I->switchToIFrame();
-$I->waitForJqueryAjax();
+$I->waitForJqueryAjax( 30 );
 $I->see( 'Updated!' );
 
 // EOF
