@@ -7,6 +7,9 @@
  * @since 1.0.4
  */
 
+// Force WordPress to re-check for updates.
+delete_site_transient( 'update_plugins' );
+
 $I = new AcceptanceTester( $scenario );
 $I->wantTo( 'Update WordPoints to the latest beta version' );
 $I->amLoggedInAsAdminOnPage( 'wp-admin/plugins.php' );
