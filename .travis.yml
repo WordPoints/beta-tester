@@ -72,7 +72,6 @@ script:
     - phpunit-ms-ajax
     - phpunit-ms-network-ajax
     - wpcept-run
-    - echo "${WORDPOINTS_MODULE}"
 
 after_script:
     - source $DEV_LIB_PATH/travis/after_script.sh
