@@ -164,17 +164,17 @@ class WordPoints_GitHub_Updater {
 	}
 
 	/**
-	 * Interact with GitHub
-	 *
-	 * @param string $query
+	 * Interact with GitHub.
 	 *
 	 * @since 1.0.0
 	 *
-	 * @return mixed
+	 * @param string $query The URL of the query to run.
+	 *
+	 * @return mixed The raw response from this query.
 	 */
 	public function remote_get( $query ) {
 
-		$raw_response = wp_remote_get( $query, array(
+		$raw_response = wp_safe_remote_get( $query, array(
 			'sslverify' => true,
 			'headers'   => array( 'accept' => 'application/vnd.github.v3+json' ),
 		) );
@@ -335,7 +335,7 @@ class WordPoints_GitHub_Updater {
 	 *
 	 * @filter pre_set_site_transient_update_plugins Added by the constructor.
 	 *
-	 * @param object  $transient The 'update_plugins' transient.
+	 * @param object $transient The 'update_plugins' transient.
 	 *
 	 * @return object $transient The modified transient.
 	 */
