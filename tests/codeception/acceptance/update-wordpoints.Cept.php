@@ -16,6 +16,7 @@ $I->switchToIFrame( 'TB_iframeContent' );
 $I->see( 'Commit Log' );
 $I->see( 'Last Updated:' );
 $I->click( 'Install Update Now' );
+$I->switchToIFrame();
 $I->waitForJqueryAjax();
 $I->see( 'Updated!' );
 
