@@ -72,6 +72,8 @@ script:
     - phpunit-ms-ajax
     - phpunit-ms-network-ajax
     - wpcept-run
+    - echo "${WORDPOINTS_MODULE}"
+    - ls "${WP_CORE_DIR}"/wp-content/wordpoints-modules/
 
 after_script:
     - source $DEV_LIB_PATH/travis/after_script.sh
