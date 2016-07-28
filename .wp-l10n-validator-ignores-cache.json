@@ -1,0 +1,46 @@
+{
+    "\/beta-tester.php": {
+        "wordpoints": {
+            "63": {
+                "name": "array",
+                "type": "unknown",
+                "args_started": true,
+                "arg_count": 1,
+                "parentheses": 1
+            }
+        },
+        "application\/vnd.github.v3+json": {
+            "179": {
+                "name": "array",
+                "type": "unknown",
+                "args_started": true,
+                "arg_count": 0,
+                "parentheses": 1
+            }
+        },
+        "commits?path=src": {
+            "224": false
+        },
+        "&since=": {
+            "229": false
+        },
+        "statuses\/master": {
+            "254": {
+                "name": "WordPoints_GitHub_Updater::github_api",
+                "type": "unknown",
+                "args_started": true,
+                "arg_count": 0,
+                "parentheses": 1
+            }
+        },
+        "-#": {
+            "370": false
+        },
+        "WordPoints": {
+            "415": false
+        },
+        ":": {
+            "431": false
+        }
+    }
+}

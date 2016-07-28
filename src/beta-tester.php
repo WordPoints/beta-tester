@@ -5,14 +5,14 @@
  * Author:      WordPoints
  * Author URI:  http://wordpoints.org/
  * Module URI:  https://github.com/WordPoints/beta-tester
- * Version:     1.0.3
+ * Version:     1.0.4
  * License:     GPLv2+
  * Description: Beta test the latest changes to the WordPoints plugin.
  * Channel:     wordpoints.org
  * ID:          316
  *
  * ---------------------------------------------------------------------------------|
- * Copyright 2014  J.D. Grimes  (email : jdg@codesymphony.co)
+ * Copyright 2014-16  J.D. Grimes  (email : jdg@codesymphony.co)
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License, version 2 or later, as
@@ -29,9 +29,9 @@
  * ---------------------------------------------------------------------------------|
  *
  * @package WordPoints_Beta_Tester
- * @version 1.0.3
+ * @version 1.0.4
  * @license http://www.gnu.org/copyleft/gpl.html GNU Public License
- * @copyright Copyright (c) 2014, J.D. Grimes
+ * @copyright Copyright (c) 2014-16, J.D. Grimes
  */
 
 /**
@@ -46,18 +46,22 @@ class WordPoints_GitHub_Updater {
 	/**
 	 * The basic config for the updates.
 	 *
-	 * The slug is dynamic, so it is set by the constructor.
+	 * The basename is dynamic, so it is set by the constructor.
 	 *
 	 * @since 1.0.0
 	 *
 	 * @type array $config {
-	 *       @type string $slug       The plugin's slug (plugin basename path).
+	 *       @type int    $id         The plugin's ID on WordPress.org.
+	 *       @type string $slug       The plugin's slug on WordPress.org.
+	 *       @type string $basename   The plugin's path relative to the plugins dir.
 	 *       @type string $github_url The URL of the repo on GitHub.
 	 *       @type string $zip_url    The URL of the zip archive of the GitHub repo.
 	 * }
 	 */
 	public $config = array(
-		'slug'       => '',
+		'id'         => 43839,
+		'slug'       => 'wordpoints',
+		'basename'   => 'wordpoints/wordpoints.php',
 		'github_url' => 'https://github.com/WordPoints/wordpoints/',
 		'zip_url'    => 'https://github.com/WordPoints/wordpoints/archive/master.zip',
 	);
@@ -84,7 +88,7 @@ class WordPoints_GitHub_Updater {
 	 */
 	public function __construct() {
 
-		$this->config['slug'] = plugin_basename( WORDPOINTS_DIR . '/wordpoints.php' );
+		$this->config['basename'] = plugin_basename( WORDPOINTS_DIR . '/wordpoints.php' );
 
 		// Check for new commits when WordPress checks for plugin updates.
 		add_filter( 'site_transient_update_plugins', array( $this, 'api_check' ) );
@@ -92,11 +96,11 @@ class WordPoints_GitHub_Updater {
 		// Hook into the plugin details screen
 		add_filter( 'plugins_api', array( $this, 'get_plugin_info' ), 10, 3 );
 
-		// Change the directory to just the /src/ folder.
-		add_filter( 'upgrader_source_selection', array( $this, 'upgrader_source_selection' ), 10, 3 );
+		// Change the source directory to just the /src/ folder.
+		add_filter( 'upgrader_source_selection', array( $this, 'upgrader_source_selection' ), 10, 4 );
 
-		// Move the package to the correct location after install.
-		add_filter( 'upgrader_post_install', array( $this, 'upgrader_post_install' ), 10, 3 );
+		// Change the destination directory to the correct one.
+		add_filter( 'upgrader_package_options', array( $this, 'upgrader_package_options' ) );
 
 		// Set the timeout for the HTTP request.
 		add_filter( 'http_request_timeout', array( $this, 'http_request_timeout' ) );
@@ -106,7 +110,7 @@ class WordPoints_GitHub_Updater {
 	}
 
 	/**
-	 * Check wether or not the transients need to be overruled.
+	 * Check whether or not the transients need to be overruled.
 	 *
 	 * When the transients are ignored, the API will be called for every single
 	 * page load.
@@ -128,7 +132,7 @@ class WordPoints_GitHub_Updater {
 	}
 
 	/**
-	 * Set the timout length for an HTTP request.
+	 * Set the timeout length for an HTTP request.
 	 *
 	 * @since 1.0.0
 	 *
@@ -160,17 +164,17 @@ class WordPoints_GitHub_Updater {
 	}
 
 	/**
-	 * Interact with GitHub
-	 *
-	 * @param string $query
+	 * Interact with GitHub.
 	 *
 	 * @since 1.0.0
 	 *
-	 * @return mixed
+	 * @param string $query The URL of the query to run.
+	 *
+	 * @return mixed The raw response from this query.
 	 */
 	public function remote_get( $query ) {
 
-		$raw_response = wp_remote_get( $query, array(
+		$raw_response = wp_safe_remote_get( $query, array(
 			'sslverify' => true,
 			'headers'   => array( 'accept' => 'application/vnd.github.v3+json' ),
 		) );
@@ -331,7 +335,7 @@ class WordPoints_GitHub_Updater {
 	 *
 	 * @filter pre_set_site_transient_update_plugins Added by the constructor.
 	 *
-	 * @param object  $transient The 'update_plugins' transient.
+	 * @param object $transient The 'update_plugins' transient.
 	 *
 	 * @return object $transient The modified transient.
 	 */
@@ -342,7 +346,7 @@ class WordPoints_GitHub_Updater {
 			return $transient;
 		}
 
-		unset( $transient->response[ $this->config['slug'] ] );
+		unset( $transient->response[ $this->config['basename'] ] );
 
 		$current_commit = get_site_option( 'wordpoints_beta_version' );
 		$latest_commit  = $this->get_latest_commit();
@@ -364,11 +368,16 @@ class WordPoints_GitHub_Updater {
 
 			$response = new stdClass;
 			$response->new_version = $version . '-#' . substr( $latest_commit->sha, 0, 8 );
+			$response->id          = $this->config['id'];
 			$response->slug        = $this->config['slug'];
+			$response->plugin      = $this->config['basename'];
 			$response->url         = $this->config['github_url'];
 			$response->package     = $this->config['zip_url'];
+			$response->upgrade_notice = '';
+			$response->tested         = $GLOBALS['wp_version'];
+			$response->compatibility  = (object) array( 'scalar' => (object) array( 'scalar' => false ) );
 
-			$transient->response[ $this->config['slug'] ] = $response;
+			$transient->response[ $this->config['basename'] ] = $response;
 		}
 
 		return $transient;
@@ -403,6 +412,7 @@ class WordPoints_GitHub_Updater {
 			$response->last_updated = $latest_commit->commit->author->date;
 		}
 
+		$response->name = 'WordPoints'; // Make sure that this is always set.
 		$response->download_link = $this->config['zip_url'];
 
 		// Display plugin information in the update modal.
@@ -437,21 +447,46 @@ class WordPoints_GitHub_Updater {
 	}
 
 	/**
+	 * Set the destination to be the correct directory.
+	 *
+	 * @since 1.0.4
+	 *
+	 * @WordPress\filter upgrader_package_options Added by the constructor.
+	 *
+	 * @param array $options The options for this upgrade.
+	 *
+	 * @return array The filtered options.
+	 */
+	public function upgrader_package_options( $options ) {
+
+		if ( $options['hook_extra']['plugin'] === $this->config['basename'] ) {
+			$options['destination'] = trailingslashit( $options['destination'] )
+				. trailingslashit( dirname( $this->config['basename'] ) );
+		}
+
+		return $options;
+	}
+
+	/**
 	 * Get the /src dir instead of the whole thing.
 	 *
 	 * @since 1.0.0
 	 *
-	 * @filter upgrader_source_selection Added by the class constructor.
+	 * @WordPress\filter upgrader_source_selection Added by the class constructor.
 	 *
 	 * @param string $source        The path to the plugin source.
 	 * @param string $remote_source The "remote" path to the plugin source.
 	 * @param object $upgrader      The WP_Uprader instance.
+	 * @param array  $args          Other arguments.
 	 *
 	 * @return string The path to the /src dir instead.
 	 */
-	public function upgrader_source_selection( $source, $remote_source, $upgrader ) {
+	public function upgrader_source_selection( $source, $remote_source, $upgrader, $args ) {
 
-		if ( basename( $source ) === 'wordpoints-master' ) {
+		if (
+			$args['plugin'] === $this->config['basename']
+			&& basename( $source ) === 'wordpoints-master'
+		) {
 			$source .= 'src/';
 		}
 
@@ -464,8 +499,7 @@ class WordPoints_GitHub_Updater {
 	 * The default location would be /wp-content/plugins/src/.
 	 *
 	 * @since 1.0.0
-	 *
-	 * @filter upgrader_post_install Added by the constructor.
+	 * @deprecated 1.0.4 See self::upgrader_package_options().
 	 *
 	 * @param boolean $true       Always true.
 	 * @param mixed   $hook_extra Extra info about the upgrade. Not used.
@@ -475,7 +509,9 @@ class WordPoints_GitHub_Updater {
 	 */
 	public function upgrader_post_install( $true, $hook_extra, $result ) {
 
-		if ( ! isset( $hook_extra['plugin'] ) || $hook_extra['plugin'] !== $this->config['slug'] ) {
+		_deprecated_function( __FUNCTION__, '1.0.4', 'self::upgrader_package_options()' );
+
+		if ( ! isset( $hook_extra['plugin'] ) || $hook_extra['plugin'] !== $this->config['basename'] ) {
 			return $true;
 		}
 
@@ -487,7 +523,7 @@ class WordPoints_GitHub_Updater {
 		$result['destination'] = WORDPOINTS_DIR;
 
 		// Activate it.
-		$activate = activate_plugin( WP_PLUGIN_DIR . '/' . $this->config['slug'] );
+		$activate = activate_plugin( WP_PLUGIN_DIR . '/' . $this->config['basename'] );
 
 		// Update the current commit in the database.
 		update_site_option( 'wordpoints_beta_version', $this->upgrade_commit );
