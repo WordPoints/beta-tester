@@ -21,6 +21,7 @@ $I->see( 'Last Updated:' );
 $I->click( 'Install Update Now' );
 $I->switchToIFrame();
 $I->waitForJqueryAjax( 30 );
+$I->waitForElement( '.updated-message.notice-success' );
 $I->see( 'Updated!' );
 
 // EOF
