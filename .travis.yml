@@ -71,7 +71,7 @@ script:
     - phpunit-ajax
     - phpunit-ms-ajax
     - phpunit-ms-network-ajax
-    - if [[ $WORDPOINTS_VERSION != master ]]; then wpcept-run; cat tests/codeception/_output/update-wordpoints.Cept.fail.html; fi
+    - if [[ $WORDPOINTS_VERSION != master ]]; then wpcept-run; fi
 
 after_script:
     - source $DEV_LIB_PATH/travis/after_script.sh
