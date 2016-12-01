@@ -11,20 +11,9 @@
  * Test that the module uninstalls itself properly.
  *
  * @since 1.0.4
- *
- * @group uninstall
  */
-class WordPoints_Beta_Tester_Uninstall_Test extends WordPoints_Module_Uninstall_UnitTestCase {
-
-	/**
-	 * @since 1.0.4
-	 */
-	public function setUp() {
-
-		$this->module_file = 'beta-tester/beta-tester.php';
-
-		parent::setUp();
-	}
+class WordPoints_Beta_Tester_Uninstall_Test
+	extends WordPoints_Dev_Lib_PHPUnit_TestCase_Module_Uninstall {
 
 	/**
 	 * Tests uninstallation.

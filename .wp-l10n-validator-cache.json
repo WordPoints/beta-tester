@@ -1,8 +1,8 @@
 {
     "files": {
         "\/beta-tester.php": {
-            "size": 15536,
-            "hash": "4c3368c771d23b56334eba4a0191fa55",
+            "size": 15542,
+            "hash": "aed666ee3f0765b52dcb6b0221a06ade",
             "errors": false
         },
         "\/uninstall.php": {
@@ -11,5 +11,5 @@
             "errors": false
         }
     },
-    "config_signature": "99486a0cfbc6b591e2bb9014607bc720"
+    "config_signature": "88a60b436e837cb05adb37405c824a71"
 }

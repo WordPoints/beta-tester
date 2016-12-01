@@ -3,7 +3,7 @@
 /**
  * Module Name: Beta Tester
  * Author:      WordPoints
- * Author URI:  http://wordpoints.org/
+ * Author URI:  https://wordpoints.org/
  * Module URI:  https://github.com/WordPoints/beta-tester
  * Version:     1.0.4
  * License:     GPLv2+
@@ -30,7 +30,7 @@
  *
  * @package WordPoints_Beta_Tester
  * @version 1.0.4
- * @license http://www.gnu.org/copyleft/gpl.html GNU Public License
+ * @license https://www.gnu.org/copyleft/gpl.html GNU Public License
  * @copyright Copyright (c) 2014-16, J.D. Grimes
  */
 
@@ -428,14 +428,14 @@ class WordPoints_GitHub_Updater {
 
 				foreach ( $latest_commits as $commit ) {
 
-					$log .= '<li><a href="' . esc_attr( esc_url( $commit->html_url ) ) . '" target="_blank">' . esc_html( substr( $commit->sha, 0, 8 ) ) . '</a>: ' . esc_html( $commit->commit->message ) . '</li>';
+					$log .= '<li><a href="' . esc_attr( esc_url( $commit->html_url ) ) . '">' . esc_html( substr( $commit->sha, 0, 8 ) ) . '</a>: ' . esc_html( $commit->commit->message ) . '</li>';
 				}
 
 				$log .= '</ul>';
 
 			} else {
 
-				$log .= sprintf( __( 'Unable to get a log of the latest commits. Try <a href="%s" target="_blank">viewing the log on GitHub</a> instead.', 'wordpoints-beta-tester' ), esc_attr( esc_url( $this->config['github_url'] . 'commits/master/' ) ) );
+				$log .= sprintf( __( 'Unable to get a log of the latest commits. Try <a href="%s">viewing the log on GitHub</a> instead.', 'wordpoints-beta-tester' ), esc_attr( esc_url( $this->config['github_url'] . 'commits/master/' ) ) );
 			}
 
 			$response->sections = array(
