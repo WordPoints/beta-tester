@@ -428,14 +428,14 @@ class WordPoints_GitHub_Updater {
 
 				foreach ( $latest_commits as $commit ) {
 
-					$log .= '<li><a href="' . esc_attr( esc_url( $commit->html_url ) ) . '">' . esc_html( substr( $commit->sha, 0, 8 ) ) . '</a>: ' . esc_html( $commit->commit->message ) . '</li>';
+					$log .= '<li><a href="' . esc_url( $commit->html_url ) . '">' . esc_html( substr( $commit->sha, 0, 8 ) ) . '</a>: ' . esc_html( $commit->commit->message ) . '</li>';
 				}
 
 				$log .= '</ul>';
 
 			} else {
 
-				$log .= sprintf( __( 'Unable to get a log of the latest commits. Try <a href="%s">viewing the log on GitHub</a> instead.', 'wordpoints-beta-tester' ), esc_attr( esc_url( $this->config['github_url'] . 'commits/master/' ) ) );
+				$log .= sprintf( __( 'Unable to get a log of the latest commits. Try <a href="%s">viewing the log on GitHub</a> instead.', 'wordpoints-beta-tester' ), esc_url( $this->config['github_url'] . 'commits/master/' ) );
 			}
 
 			$response->sections = array(
