@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Test case for the module's unisntallation routine.
+ * Test case for the module's uninstallation routine.
  *
  * @package WordPoints_Beta_Tester
  * @since 1.0.4
@@ -13,7 +13,7 @@
  * @since 1.0.4
  */
 class WordPoints_Beta_Tester_Uninstall_Test
-	extends WordPoints_Dev_Lib_PHPUnit_TestCase_Module_Uninstall {
+	extends WordPoints_PHPUnit_TestCase_Module_Uninstall {
 
 	/**
 	 * Tests uninstallation.
@@ -26,7 +26,7 @@ class WordPoints_Beta_Tester_Uninstall_Test
 
 		$this->uninstall();
 
-		$this->assertEmpty( get_site_option( 'wordpoints_beta_version' ) );
+		$this->assertFalse( get_site_option( 'wordpoints_beta_version' ) );
 	}
 }
 

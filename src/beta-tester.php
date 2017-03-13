@@ -156,7 +156,7 @@ class WordPoints_GitHub_Updater {
 	 */
 	public function http_request_sslverify( $args, $url ) {
 
-		if ( $this->config['zip_url'] == $url ) {
+		if ( $this->config['zip_url'] === $url ) {
 			$args['sslverify'] = true;
 		}
 
@@ -351,10 +351,10 @@ class WordPoints_GitHub_Updater {
 		$current_commit = get_site_option( 'wordpoints_beta_version' );
 		$latest_commit  = $this->get_latest_commit();
 
-		if ( $latest_commit && ( ! $current_commit || $current_commit->sha != $latest_commit->sha ) ) {
+		if ( $latest_commit && ( ! $current_commit || $current_commit->sha !== $latest_commit->sha ) ) {
 
 			// Check the build status.
-			if ( 'success' != $this->get_build_status() ) {
+			if ( 'success' !== $this->get_build_status() ) {
 				return $transient;
 			}
 
@@ -402,7 +402,7 @@ class WordPoints_GitHub_Updater {
 	public function get_plugin_info( $false, $action, $response ) {
 
 		// Check if this call API is for the right plugin
-		if ( ! isset( $response->slug ) || $response->slug != $this->config['slug'] ) {
+		if ( ! isset( $response->slug ) || $response->slug !== $this->config['slug'] ) {
 			return $false;
 		}
 
@@ -416,7 +416,7 @@ class WordPoints_GitHub_Updater {
 		$response->download_link = $this->config['zip_url'];
 
 		// Display plugin information in the update modal.
-		if ( 'plugin_information' == $action && defined( 'IFRAME_REQUEST' ) && IFRAME_REQUEST ) {
+		if ( 'plugin_information' === $action && defined( 'IFRAME_REQUEST' ) && IFRAME_REQUEST ) {
 
 			$latest_commits = $this->get_latest_commits();
 
@@ -435,6 +435,7 @@ class WordPoints_GitHub_Updater {
 
 			} else {
 
+				// translators: URL to view list of commits on GitHub.
 				$log .= sprintf( __( 'Unable to get a log of the latest commits. Try <a href="%s">viewing the log on GitHub</a> instead.', 'wordpoints-beta-tester' ), esc_url( $this->config['github_url'] . 'commits/master/' ) );
 			}
 
