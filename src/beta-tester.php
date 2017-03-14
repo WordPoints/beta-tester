@@ -63,7 +63,7 @@ class WordPoints_GitHub_Updater {
 		'slug'       => 'wordpoints',
 		'basename'   => 'wordpoints/wordpoints.php',
 		'github_url' => 'https://github.com/WordPoints/wordpoints/',
-		'zip_url'    => 'https://github.com/WordPoints/wordpoints/archive/master.zip',
+		'zip_url'    => 'https://github.com/WordPoints/wordpoints/archive/develop.zip',
 	);
 
 	/**
@@ -251,7 +251,7 @@ class WordPoints_GitHub_Updater {
 
 		if ( $this->overrule_transients() || empty( $build_status ) ) {
 
-			$commit = $this->github_api( 'statuses/master' );
+			$commit = $this->github_api( 'statuses/develop' );
 
 			if ( ! is_array( $commit ) || ! isset( $commit[0]->state ) ) {
 				return false;
@@ -436,7 +436,7 @@ class WordPoints_GitHub_Updater {
 			} else {
 
 				// translators: URL to view list of commits on GitHub.
-				$log .= sprintf( __( 'Unable to get a log of the latest commits. Try <a href="%s">viewing the log on GitHub</a> instead.', 'wordpoints-beta-tester' ), esc_url( $this->config['github_url'] . 'commits/master/' ) );
+				$log .= sprintf( __( 'Unable to get a log of the latest commits. Try <a href="%s">viewing the log on GitHub</a> instead.', 'wordpoints-beta-tester' ), esc_url( $this->config['github_url'] . 'commits/develop/' ) );
 			}
 
 			$response->sections = array(
@@ -477,7 +477,7 @@ class WordPoints_GitHub_Updater {
 	 *
 	 * @param string $source        The path to the plugin source.
 	 * @param string $remote_source The "remote" path to the plugin source.
-	 * @param object $upgrader      The WP_Uprader instance.
+	 * @param object $upgrader      The WP_Upgrader instance.
 	 * @param array  $args          Other arguments.
 	 *
 	 * @return string The path to the /src dir instead.
@@ -486,7 +486,7 @@ class WordPoints_GitHub_Updater {
 
 		if (
 			$args['plugin'] === $this->config['basename']
-			&& basename( $source ) === 'wordpoints-master'
+			&& basename( $source ) === 'wordpoints-develop'
 		) {
 			$source .= 'src/';
 		}
