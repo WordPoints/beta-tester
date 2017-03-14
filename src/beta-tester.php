@@ -3,16 +3,18 @@
 /**
  * Module Name: Beta Tester
  * Author:      WordPoints
- * Author URI:  http://wordpoints.org/
- * Module URI:  https://github.com/WordPoints/beta-tester
- * Version:     1.0.4
+ * Author URI:  https://wordpoints.org/
+ * Module URI:  https://wordpoints.org/modules/beta-tester
+ * Version:     1.1.0
  * License:     GPLv2+
  * Description: Beta test the latest changes to the WordPoints plugin.
+ * Text Domain: wordpoints-beta-tester
+ * Domain Path: /languages
  * Channel:     wordpoints.org
  * ID:          316
  *
  * ---------------------------------------------------------------------------------|
- * Copyright 2014-16  J.D. Grimes  (email : jdg@codesymphony.co)
+ * Copyright 2014-17  J.D. Grimes  (email : jdg@codesymphony.co)
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License, version 2 or later, as
@@ -29,9 +31,9 @@
  * ---------------------------------------------------------------------------------|
  *
  * @package WordPoints_Beta_Tester
- * @version 1.0.4
- * @license http://www.gnu.org/copyleft/gpl.html GNU Public License
- * @copyright Copyright (c) 2014-16, J.D. Grimes
+ * @version 1.1.0
+ * @license https://www.gnu.org/copyleft/gpl.html GNU Public License
+ * @copyright 2014-17 J.D. Grimes
  */
 
 /**
@@ -63,7 +65,7 @@ class WordPoints_GitHub_Updater {
 		'slug'       => 'wordpoints',
 		'basename'   => 'wordpoints/wordpoints.php',
 		'github_url' => 'https://github.com/WordPoints/wordpoints/',
-		'zip_url'    => 'https://github.com/WordPoints/wordpoints/archive/master.zip',
+		'zip_url'    => 'https://github.com/WordPoints/wordpoints/archive/develop.zip',
 	);
 
 	/**
@@ -104,9 +106,6 @@ class WordPoints_GitHub_Updater {
 
 		// Set the timeout for the HTTP request.
 		add_filter( 'http_request_timeout', array( $this, 'http_request_timeout' ) );
-
-		// Set sslverify for zip download.
-		add_filter( 'http_request_args', array( $this, 'http_request_sslverify' ), 10, 2 );
 	}
 
 	/**
@@ -147,6 +146,9 @@ class WordPoints_GitHub_Updater {
 	/**
 	 * Set the 'sslverify' argument for an HTTP request.
 	 *
+	 * @since 1.0.0
+	 * @deprecated 1.1.0 No longer needed.
+	 *
 	 * @filter http_request_args Added by the constructor.
 	 *
 	 * @param array  $args The request arguments.
@@ -156,7 +158,7 @@ class WordPoints_GitHub_Updater {
 	 */
 	public function http_request_sslverify( $args, $url ) {
 
-		if ( $this->config['zip_url'] == $url ) {
+		if ( $this->config['zip_url'] === $url ) {
 			$args['sslverify'] = true;
 		}
 
@@ -175,7 +177,6 @@ class WordPoints_GitHub_Updater {
 	public function remote_get( $query ) {
 
 		$raw_response = wp_safe_remote_get( $query, array(
-			'sslverify' => true,
 			'headers'   => array( 'accept' => 'application/vnd.github.v3+json' ),
 		) );
 
@@ -251,7 +252,7 @@ class WordPoints_GitHub_Updater {
 
 		if ( $this->overrule_transients() || empty( $build_status ) ) {
 
-			$commit = $this->github_api( 'statuses/master' );
+			$commit = $this->github_api( 'statuses/develop' );
 
 			if ( ! is_array( $commit ) || ! isset( $commit[0]->state ) ) {
 				return false;
@@ -351,10 +352,10 @@ class WordPoints_GitHub_Updater {
 		$current_commit = get_site_option( 'wordpoints_beta_version' );
 		$latest_commit  = $this->get_latest_commit();
 
-		if ( $latest_commit && ( ! $current_commit || $current_commit->sha != $latest_commit->sha ) ) {
+		if ( $latest_commit && ( ! $current_commit || $current_commit->sha !== $latest_commit->sha ) ) {
 
 			// Check the build status.
-			if ( 'success' != $this->get_build_status() ) {
+			if ( 'success' !== $this->get_build_status() ) {
 				return $transient;
 			}
 
@@ -402,7 +403,7 @@ class WordPoints_GitHub_Updater {
 	public function get_plugin_info( $false, $action, $response ) {
 
 		// Check if this call API is for the right plugin
-		if ( ! isset( $response->slug ) || $response->slug != $this->config['slug'] ) {
+		if ( ! isset( $response->slug ) || $response->slug !== $this->config['slug'] ) {
 			return $false;
 		}
 
@@ -416,7 +417,7 @@ class WordPoints_GitHub_Updater {
 		$response->download_link = $this->config['zip_url'];
 
 		// Display plugin information in the update modal.
-		if ( 'plugin_information' == $action && defined( 'IFRAME_REQUEST' ) && IFRAME_REQUEST ) {
+		if ( 'plugin_information' === $action && defined( 'IFRAME_REQUEST' ) && IFRAME_REQUEST ) {
 
 			$latest_commits = $this->get_latest_commits();
 
@@ -428,14 +429,15 @@ class WordPoints_GitHub_Updater {
 
 				foreach ( $latest_commits as $commit ) {
 
-					$log .= '<li><a href="' . esc_attr( esc_url( $commit->html_url ) ) . '" target="_blank">' . esc_html( substr( $commit->sha, 0, 8 ) ) . '</a>: ' . esc_html( $commit->commit->message ) . '</li>';
+					$log .= '<li><a href="' . esc_url( $commit->html_url ) . '">' . esc_html( substr( $commit->sha, 0, 8 ) ) . '</a>: ' . esc_html( $commit->commit->message ) . '</li>';
 				}
 
 				$log .= '</ul>';
 
 			} else {
 
-				$log .= sprintf( __( 'Unable to get a log of the latest commits. Try <a href="%s" target="_blank">viewing the log on GitHub</a> instead.', 'wordpoints-beta-tester' ), esc_attr( esc_url( $this->config['github_url'] . 'commits/master/' ) ) );
+				// translators: URL to view list of commits on GitHub.
+				$log .= sprintf( __( 'Unable to get a log of the latest commits. Try <a href="%s">viewing the log on GitHub</a> instead.', 'wordpoints-beta-tester' ), esc_url( $this->config['github_url'] . 'commits/develop/' ) );
 			}
 
 			$response->sections = array(
@@ -476,7 +478,7 @@ class WordPoints_GitHub_Updater {
 	 *
 	 * @param string $source        The path to the plugin source.
 	 * @param string $remote_source The "remote" path to the plugin source.
-	 * @param object $upgrader      The WP_Uprader instance.
+	 * @param object $upgrader      The WP_Upgrader instance.
 	 * @param array  $args          Other arguments.
 	 *
 	 * @return string The path to the /src dir instead.
@@ -485,7 +487,7 @@ class WordPoints_GitHub_Updater {
 
 		if (
 			$args['plugin'] === $this->config['basename']
-			&& basename( $source ) === 'wordpoints-master'
+			&& basename( $source ) === 'wordpoints-develop'
 		) {
 			$source .= 'src/';
 		}

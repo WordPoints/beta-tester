@@ -10,15 +10,16 @@ php:
     - 5.5
     - 5.6
     - 7.0
+    - 7.1
 
 env:
     - TRAVISCI_RUN=codesniff
-    - TRAVISCI_RUN=phpunit WP_VERSION=master WORDPOINTS_VERSION=master
-    - TRAVISCI_RUN=phpunit WP_VERSION=master WORDPOINTS_VERSION=stable
-    - TRAVISCI_RUN=phpunit WP_VERSION=4.5 WORDPOINTS_VERSION=master
-    - TRAVISCI_RUN=phpunit WP_VERSION=4.5 WORDPOINTS_VERSION=stable
-    - TRAVISCI_RUN=phpunit WP_VERSION=4.4 WORDPOINTS_VERSION=master
-    - TRAVISCI_RUN=phpunit WP_VERSION=4.4 WORDPOINTS_VERSION=stable
+    - TRAVISCI_RUN=phpunit WP_VERSION=develop WORDPOINTS_VERSION=develop
+    - TRAVISCI_RUN=phpunit WP_VERSION=develop WORDPOINTS_VERSION=master
+    - TRAVISCI_RUN=phpunit WP_VERSION=4.7 WORDPOINTS_VERSION=develop
+    - TRAVISCI_RUN=phpunit WP_VERSION=4.7 WORDPOINTS_VERSION=master
+    - TRAVISCI_RUN=phpunit WP_VERSION=4.6 WORDPOINTS_VERSION=develop
+    - TRAVISCI_RUN=phpunit WP_VERSION=4.6 WORDPOINTS_VERSION=master
 
 sudo: false
 
@@ -26,10 +27,10 @@ matrix:
   include:
     # Only run HHVM against trunk for now.
     - php: hhvm
-      env: TRAVISCI_RUN=phpunit WP_VERSION=master
+      env: TRAVISCI_RUN=phpunit WP_VERSION=develop
     # Only run nightly against trunk.
     - php: nightly
-      env: TRAVISCI_RUN=phpunit WP_VERSION=master
+      env: TRAVISCI_RUN=phpunit WP_VERSION=develop
   exclude:
     # The codesniff pass only needs to be run once, I chose PHP 5.3, since WPCS requires it.
     - php: 5.2
@@ -42,6 +43,12 @@ matrix:
       env: TRAVISCI_RUN=codesniff
     - php: 7.0
       env: TRAVISCI_RUN=codesniff
+    - php: 7.1
+      env: TRAVISCI_RUN=codesniff
+    - php: 7.1
+      env: TRAVISCI_RUN=phpunit WP_VERSION=4.6 WORDPOINTS_VERSION=develop
+    - php: 7.1
+      env: TRAVISCI_RUN=phpunit WP_VERSION=4.6 WORDPOINTS_VERSION=master
   allow_failures:
     - php: hhvm
     - php: nightly
@@ -57,17 +64,18 @@ script:
     - codesniff-php-syntax
     - codesniff-php-autoloaders
     - codesniff-phpcs
+    - codesniff-strings
     - codesniff-jshint
     - codesniff-l10n
     - codesniff-xmllint
     - codesniff-bash
     - codesniff-symlinks
-    - phpunit-basic
-    - phpunit-ms
-    - phpunit-ms-network
     - phpunit-uninstall
     - phpunit-ms-uninstall
     - phpunit-ms-network-uninstall
+    - WORDPOINTS_ONLY_UNINSTALL_MODULE=1 phpunit-uninstall
+    - WORDPOINTS_ONLY_UNINSTALL_MODULE=1 phpunit-ms-uninstall
+    - WORDPOINTS_ONLY_UNINSTALL_MODULE=1 phpunit-ms-network-uninstall
     - phpunit-ajax
     - phpunit-ms-ajax
     - phpunit-ms-network-ajax

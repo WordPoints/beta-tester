@@ -1,7 +1,9 @@
-Beta Tester
+Beta Tester [![Build Status](https://travis-ci.org/WordPoints/beta-tester.svg?branch=develop)](https://travis-ci.org/WordPoints/beta-tester)  [![HackerOne Bug Bounty Program](https://img.shields.io/badge/security-HackerOne-blue.svg)](https://hackerone.com/wordpoints)
 ===========
 
 WordPoints module for beta testing the WordPoints plugin.
+
+You can visit its [homepage on WordPoints.org](https://wordpoints.org/modules/beta-tester/)
 
 ## Installation ##
 
