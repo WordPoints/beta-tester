@@ -10,7 +10,11 @@ Nothing documented yet.
 
 ## [1.1.0] - 2017-03-14
 
-## Changed
+### Added
+
+- POT file and l10n module file headers.
+
+### Changed
 
 - Updates to come from the `develop` branch of WordPoints, instead of `master`, which is now the stable branch. #16
 - Stop passing `sslverify` => `true` to `wp_remote_get()`. #14

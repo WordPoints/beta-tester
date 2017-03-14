@@ -1,7 +1,7 @@
 {
     "\/beta-tester.php": {
         "wordpoints": {
-            "63": {
+            "65": {
                 "name": "array",
                 "type": "unknown",
                 "args_started": true,
@@ -10,7 +10,7 @@
             }
         },
         "application\/vnd.github.v3+json": {
-            "179": {
+            "180": {
                 "name": "array",
                 "type": "unknown",
                 "args_started": true,
@@ -19,13 +19,13 @@
             }
         },
         "commits?path=src": {
-            "224": false
+            "225": false
         },
         "&since=": {
-            "229": false
+            "230": false
         },
-        "statuses\/master": {
-            "254": {
+        "statuses\/develop": {
+            "255": {
                 "name": "WordPoints_GitHub_Updater::github_api",
                 "type": "unknown",
                 "args_started": true,
@@ -34,13 +34,13 @@
             }
         },
         "-#": {
-            "370": false
+            "371": false
         },
         "WordPoints": {
-            "415": false
+            "416": false
         },
         ":": {
-            "431": false
+            "432": false
         }
     }
 }

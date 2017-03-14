@@ -5,14 +5,16 @@
  * Author:      WordPoints
  * Author URI:  https://wordpoints.org/
  * Module URI:  https://wordpoints.org/modules/beta-tester
- * Version:     1.0.4
+ * Version:     1.1.0
  * License:     GPLv2+
  * Description: Beta test the latest changes to the WordPoints plugin.
+ * Text Domain: wordpoints-beta-tester
+ * Domain Path: /languages
  * Channel:     wordpoints.org
  * ID:          316
  *
  * ---------------------------------------------------------------------------------|
- * Copyright 2014-16  J.D. Grimes  (email : jdg@codesymphony.co)
+ * Copyright 2014-17  J.D. Grimes  (email : jdg@codesymphony.co)
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License, version 2 or later, as
@@ -29,9 +31,9 @@
  * ---------------------------------------------------------------------------------|
  *
  * @package WordPoints_Beta_Tester
- * @version 1.0.4
+ * @version 1.1.0
  * @license https://www.gnu.org/copyleft/gpl.html GNU Public License
- * @copyright Copyright (c) 2014-16, J.D. Grimes
+ * @copyright 2014-17 J.D. Grimes
  */
 
 /**
