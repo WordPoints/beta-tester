@@ -104,9 +104,6 @@ class WordPoints_GitHub_Updater {
 
 		// Set the timeout for the HTTP request.
 		add_filter( 'http_request_timeout', array( $this, 'http_request_timeout' ) );
-
-		// Set sslverify for zip download.
-		add_filter( 'http_request_args', array( $this, 'http_request_sslverify' ), 10, 2 );
 	}
 
 	/**
@@ -147,6 +144,9 @@ class WordPoints_GitHub_Updater {
 	/**
 	 * Set the 'sslverify' argument for an HTTP request.
 	 *
+	 * @since 1.0.0
+	 * @deprecated 1.1.0 No longer needed.
+	 *
 	 * @filter http_request_args Added by the constructor.
 	 *
 	 * @param array  $args The request arguments.
@@ -175,7 +175,6 @@ class WordPoints_GitHub_Updater {
 	public function remote_get( $query ) {
 
 		$raw_response = wp_safe_remote_get( $query, array(
-			'sslverify' => true,
 			'headers'   => array( 'accept' => 'application/vnd.github.v3+json' ),
 		) );
 
