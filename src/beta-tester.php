@@ -4,7 +4,7 @@
  * Module Name: Beta Tester
  * Author:      WordPoints
  * Author URI:  https://wordpoints.org/
- * Module URI:  https://github.com/WordPoints/beta-tester
+ * Module URI:  https://wordpoints.org/modules/beta-tester
  * Version:     1.0.4
  * License:     GPLv2+
  * Description: Beta test the latest changes to the WordPoints plugin.
