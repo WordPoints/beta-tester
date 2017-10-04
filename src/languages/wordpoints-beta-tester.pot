@@ -2,9 +2,9 @@
 # This file is distributed under the same license as the WordPoints Beta Tester package.
 msgid ""
 msgstr ""
-"Project-Id-Version: WordPoints Beta Tester 1.1.0\n"
+"Project-Id-Version: WordPoints Beta Tester 1.1.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-03-14 20:26:27+00:00\n"
+"POT-Creation-Date: 2017-10-04 21:18:43+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -13,42 +13,42 @@ msgstr ""
 "Language-Team: LANGUAGE <LL@li.org>\n"
 
 #. translators: URL to view list of commits on GitHub.
-#: beta-tester.php:438
+#: beta-tester.php:447
 msgid ""
 "Unable to get a log of the latest commits. Try <a href=\"%s\">viewing the "
 "log on GitHub</a> instead."
 msgstr ""
 
-#: beta-tester.php:442
+#: beta-tester.php:451
 msgid "Commit Log"
 msgstr ""
 
-#: beta-tester.php:533
+#: beta-tester.php:542
 msgid ""
 "The plugin has been updated, but could not be reactivated. Please reactivate "
 "it manually."
 msgstr ""
 
-#: beta-tester.php:535
+#: beta-tester.php:544
 msgid "Plugin reactivated successfully."
 msgstr ""
 
-#. Description of the module
+#. Description of the extension
 msgid "Beta test the latest changes to the WordPoints plugin."
 msgstr ""
 
-#. Author of the module
+#. Author of the extension
 msgid "WordPoints"
 msgstr ""
 
-#. Author URI of the module
+#. Author URI of the extension
 msgid "https://wordpoints.org/"
 msgstr ""
 
-#. Module Name of the module
+#. Extension Name of the extension
 msgid "Beta Tester"
 msgstr ""
 
-#. Module URI of the module
-msgid "https://wordpoints.org/modules/beta-tester"
+#. Extension URI of the extension
+msgid "https://wordpoints.org/extensions/beta-tester"
 msgstr ""

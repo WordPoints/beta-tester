@@ -1,17 +1,7 @@
 <?php
 
 /**
- * Module Name: Beta Tester
- * Author:      WordPoints
- * Author URI:  https://wordpoints.org/
- * Module URI:  https://wordpoints.org/modules/beta-tester
- * Version:     1.1.0
- * License:     GPLv2+
- * Description: Beta test the latest changes to the WordPoints plugin.
- * Text Domain: wordpoints-beta-tester
- * Domain Path: /languages
- * Channel:     wordpoints.org
- * ID:          316
+ * Main file of the extension.
  *
  * ---------------------------------------------------------------------------------|
  * Copyright 2014-17  J.D. Grimes  (email : jdg@codesymphony.co)
@@ -31,10 +21,27 @@
  * ---------------------------------------------------------------------------------|
  *
  * @package WordPoints_Beta_Tester
- * @version 1.1.0
+ * @version 1.1.1
  * @license https://www.gnu.org/copyleft/gpl.html GNU Public License
  * @copyright 2014-17 J.D. Grimes
  */
+
+wordpoints_register_extension(
+	'
+		Extension Name: Beta Tester
+		Author:         WordPoints
+		Author URI:     https://wordpoints.org/
+		Extension URI:  https://wordpoints.org/extensions/beta-tester
+		Version:        1.1.1
+		License:        GPLv2+
+		Description:    Beta test the latest changes to the WordPoints plugin.
+		Text Domain:    wordpoints-beta-tester
+		Domain Path:    /languages
+		Server:         wordpoints.org
+		ID:             316
+	'
+	, __FILE__
+);
 
 /**
  * Update the WordPoints plugin from the latest commits on GitHub.
@@ -367,7 +374,7 @@ class WordPoints_GitHub_Updater {
 				$version = WORDPOINTS_VERSION;
 			}
 
-			$response = new stdClass;
+			$response = new stdClass();
 			$response->new_version = $version . '-#' . substr( $latest_commit->sha, 0, 8 );
 			$response->id          = $this->config['id'];
 			$response->slug        = $this->config['slug'];
@@ -553,7 +560,7 @@ function wordpoints_beta_tester() {
 	static $instance;
 
 	if ( ! $instance ) {
-		$instance = new WordPoints_GitHub_Updater;
+		$instance = new WordPoints_GitHub_Updater();
 	}
 
 	return $instance;

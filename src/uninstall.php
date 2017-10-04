@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Clean up the database when the module is uninstalled.
+ * Clean up the database when the extension is uninstalled.
  *
  * @package WordPoints_Beta_Tester
  * @since 1.0.0

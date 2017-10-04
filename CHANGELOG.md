@@ -8,6 +8,12 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a CH
 
 Nothing documented yet.
 
+## [1.1.1] - 2017-10-04
+
+### Fixed
+
+- Deprecated notices from `Channel`, `Module Name`, and `Module URI` extension headers.
+
 ## [1.1.0] - 2017-03-14
 
 ### Added
@@ -57,6 +63,7 @@ Nothing documented yet.
 Initial release.
 
 [unreleased]: https://github.com/WordPoints/beta-tester/compare/master...HEAD
+[1.1.1]: https://github.com/WordPoints/beta-tester/compare/1.1.0...1.1.1
 [1.1.0]: https://github.com/WordPoints/beta-tester/compare/1.0.4...1.1.0
 [1.0.4]: https://github.com/WordPoints/beta-tester/compare/1.0.3...1.0.4
 [1.0.3]: https://github.com/WordPoints/beta-tester/compare/1.0.2...1.0.3
