@@ -11,9 +11,11 @@
  * Test that the module uninstalls itself properly.
  *
  * @since 1.0.4
+ *
+ * @coversNothing
  */
 class WordPoints_Beta_Tester_Uninstall_Test
-	extends WordPoints_PHPUnit_TestCase_Module_Uninstall {
+	extends WordPoints_PHPUnit_TestCase_Extension_Uninstall {
 
 	/**
 	 * Tests uninstallation.

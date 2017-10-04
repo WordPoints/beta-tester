@@ -367,7 +367,7 @@ class WordPoints_GitHub_Updater {
 				$version = WORDPOINTS_VERSION;
 			}
 
-			$response = new stdClass;
+			$response = new stdClass();
 			$response->new_version = $version . '-#' . substr( $latest_commit->sha, 0, 8 );
 			$response->id          = $this->config['id'];
 			$response->slug        = $this->config['slug'];
@@ -553,7 +553,7 @@ function wordpoints_beta_tester() {
 	static $instance;
 
 	if ( ! $instance ) {
-		$instance = new WordPoints_GitHub_Updater;
+		$instance = new WordPoints_GitHub_Updater();
 	}
 
 	return $instance;
