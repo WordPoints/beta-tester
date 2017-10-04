@@ -21,7 +21,7 @@
  * ---------------------------------------------------------------------------------|
  *
  * @package WordPoints_Beta_Tester
- * @version 1.1.0
+ * @version 1.1.1
  * @license https://www.gnu.org/copyleft/gpl.html GNU Public License
  * @copyright 2014-17 J.D. Grimes
  */
@@ -32,7 +32,7 @@ wordpoints_register_extension(
 		Author:         WordPoints
 		Author URI:     https://wordpoints.org/
 		Extension URI:  https://wordpoints.org/extensions/beta-tester
-		Version:        1.1.0
+		Version:        1.1.1
 		License:        GPLv2+
 		Description:    Beta test the latest changes to the WordPoints plugin.
 		Text Domain:    wordpoints-beta-tester
